@@ -72,7 +72,6 @@ export async function handleTransaction(
       ...ruleRes,
       reason: UnsuccessfulTransaction.reason,
       subRuleRef: UnsuccessfulTransaction.subRuleRef,
-      result: UnsuccessfulTransaction.outcome,
     };
   }
 
