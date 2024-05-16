@@ -31,7 +31,7 @@ const getMockRequest = (): RuleRequest => {
     ),
 
     networkMap: JSON.parse(
-      '{"_key":"26345403","_id":"networkConfiguration/26345403","_rev":"_cxc-1vO---","messages":[{"id":"004@1.0.0","cfg":"1.0.0","txTp":"pacs.002.001.12","channels":[{"id":"001@1.0.0","cfg":"1.0.0","typologies":[{"id":"901@1.0.0","cfg":"028@1.0","rules":[{"id":"004@1.0.0","cfg":"1.0.0"},{"id":"028@1.0","cfg":"1.0.0"}]},{"id":"029@1.0","cfg":"029@1.0","rules":[{"id":"003@1.0","cfg":"1.0"},{"id":"005@1.0","cfg":"1.0"}]}]},{"id":"002@1.0","cfg":"1.0","typologies":[{"id":"030@1.0","cfg":"030@1.0","rules":[{"id":"003@1.0","cfg":"1.0"},{"id":"006@1.0","cfg":"1.0"}]},{"id":"031@1.0","cfg":"031@1.0","rules":[{"id":"003@1.0","cfg":"1.0"},{"id":"007@1.0","cfg":"1.0"}]}]}]}]}',
+      '{"_key":"26345403","_id":"networkConfiguration/26345403","_rev":"_cxc-1vO---","messages":[{"id":"004@1.0.0","cfg":"1.0.0","txTp":"pacs.002.001.12","typologies":[{"id":"901@1.0.0","cfg":"028@1.0","rules":[{"id":"004@1.0.0","cfg":"1.0.0"},{"id":"028@1.0","cfg":"1.0.0"}]},{"id":"030@1.0","cfg":"030@1.0","rules":[{"id":"003@1.0","cfg":"1.0"},{"id":"006@1.0","cfg":"1.0"}]},{"id":"031@1.0","cfg":"031@1.0","rules":[{"id":"003@1.0","cfg":"1.0"},{"id":"007@1.0","cfg":"1.0"}]},{"id":"029@1.0","cfg":"029@1.0","rules":[{"id":"003@1.0","cfg":"1.0"},{"id":"005@1.0","cfg":"1.0"}]}]}]}',
     ),
 
     DataCache: {
@@ -108,7 +108,6 @@ beforeAll(async () => {
   ruleRes = {
     id: '901@1.0.0',
     cfg: '1.0.0',
-    result: false,
     subRuleRef: '.00',
     reason: '',
   };
@@ -131,7 +130,6 @@ const determineOutcome = (
           (!band.upperLimit || value < band.upperLimit)
         ) {
           ruleResult.subRuleRef = band.subRuleRef;
-          ruleResult.result = band.outcome;
           ruleResult.reason = band.reason;
           break;
         }
@@ -169,7 +167,7 @@ describe('Happy path', () => {
 
     expect(res).toEqual(
       JSON.parse(
-        '{"id":"901@1.0.0", "cfg":"1.0.0","result":false,"subRuleRef":".01","reason":"The debtor has performed one transaction to date"}',
+        '{"id":"901@1.0.0", "cfg":"1.0.0","subRuleRef":".01","reason":"The debtor has performed one transaction to date"}',
       ),
     );
   });
@@ -196,7 +194,7 @@ describe('Happy path', () => {
 
     expect(res).toEqual(
       JSON.parse(
-        '{"id":"901@1.0.0", "cfg":"1.0.0","result":true,"subRuleRef":".02","reason":"The debtor has performed two or three transactions to date"}',
+        '{"id":"901@1.0.0", "cfg":"1.0.0","subRuleRef":".02","reason":"The debtor has performed two or three transactions to date"}',
       ),
     );
   });
@@ -223,7 +221,7 @@ describe('Happy path', () => {
 
     expect(res).toEqual(
       JSON.parse(
-        '{"id":"901@1.0.0", "cfg":"1.0.0","result":true,"subRuleRef":".02","reason":"The debtor has performed two or three transactions to date"}',
+        '{"id":"901@1.0.0", "cfg":"1.0.0","subRuleRef":".02","reason":"The debtor has performed two or three transactions to date"}',
       ),
     );
   });
@@ -250,7 +248,7 @@ describe('Happy path', () => {
 
     expect(res).toEqual(
       JSON.parse(
-        '{"id":"901@1.0.0", "cfg":"1.0.0","result":true,"subRuleRef":".03","reason":"The debtor has performed 4 or more transactions to date"}',
+        '{"id":"901@1.0.0", "cfg":"1.0.0","subRuleRef":".03","reason":"The debtor has performed 4 or more transactions to date"}',
       ),
     );
   });
@@ -277,7 +275,7 @@ describe('Exit conditions', () => {
 
     expect(res).toEqual(
       JSON.parse(
-        '{"id":"901@1.0.0", "cfg":"1.0.0","result":false,"subRuleRef":".x00","reason":"Incoming transaction is unsuccessful"}',
+        '{"id":"901@1.0.0", "cfg":"1.0.0","subRuleRef":".x00","reason":"Incoming transaction is unsuccessful"}',
       ),
     );
   });
